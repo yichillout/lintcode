@@ -24,6 +24,7 @@ public class LC246_BinaryTreePathSumII {
 		
 		buffer.add(head.val);
 		
+		// from the end node to root
 		for (int i = level; i >= 0; i--) {
 			tmp -= buffer.get(i);
 			if (tmp == 0) {
