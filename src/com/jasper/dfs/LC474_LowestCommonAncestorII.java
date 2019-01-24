@@ -3,7 +3,7 @@ package com.jasper.dfs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LC474_LowestCommonAncestoII {
+public class LC474_LowestCommonAncestorII {
 
 	/*
 	 * @param root: The root of the tree
