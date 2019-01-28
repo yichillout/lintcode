@@ -3,6 +3,8 @@ package com.jasper.dfs;
 import java.util.Stack;
 
 public class LC86_BinarySearchTreeIterator {
+	
+	// 这个stack存储的是从这个节点到root的路径
 	private Stack<TreeNode> stack = new Stack<>();
 
 	// @param root: The root of binary tree.
@@ -23,7 +25,7 @@ public class LC86_BinarySearchTreeIterator {
 		TreeNode curt = stack.peek();
 		TreeNode node = curt;
 
-		// move to the next node
+		// 网上找右拐点
 		if (node.right == null) {
 			node = stack.pop();
 			while (!stack.isEmpty() && stack.peek().right == node) {
