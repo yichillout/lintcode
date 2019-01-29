@@ -19,9 +19,9 @@ public class LC153_CombinationSumII {
 		return results;
 	}
 
-	private void helper(int[] candidates, int startIndex, List<Integer> combination, int target,
+	private void helper(int[] candidates, int startIndex, List<Integer> combination, int remainTarget,
 			List<List<Integer>> results) {
-		if (target == 0) {
+		if (remainTarget == 0) {
 			results.add(new ArrayList<Integer>(combination));
 			return;
 		}
@@ -30,11 +30,11 @@ public class LC153_CombinationSumII {
 			if (i != startIndex && candidates[i] == candidates[i - 1]) {
 				continue;
 			}
-			if (target < candidates[i]) {
+			if (remainTarget < candidates[i]) {
 				break;
 			}
 			combination.add(candidates[i]);
-			helper(candidates, i + 1, combination, target - candidates[i], results);
+			helper(candidates, i + 1, combination, remainTarget - candidates[i], results);
 			combination.remove(combination.size() - 1);
 		}
 	}

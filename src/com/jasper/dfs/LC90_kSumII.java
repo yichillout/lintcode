@@ -6,17 +6,17 @@ import java.util.List;
 public class LC90_kSumII {
 	List<List<Integer>> ans;
 
-	public void dfs(int A[], int K, int target, int index, List<Integer> tans) {
+	public void dfs(int A[], int K, int remainTarget, int index, List<Integer> tans) {
 
-		if (K == 0 && target == 0) {
+		if (K == 0 && remainTarget == 0) {
 			ans.add(new ArrayList<Integer>(tans));
 			return;
 		}
-		if (K < 0 || target < 0 || index < 0)
+		if (K < 0 || remainTarget < 0 || index < 0)
 			return;
-		dfs(A, K, target, index - 1, tans);
+		dfs(A, K, remainTarget, index - 1, tans);
 		tans.add(A[index]);
-		dfs(A, K - 1, target - A[index], index - 1, tans);
+		dfs(A, K - 1, remainTarget - A[index], index - 1, tans);
 		tans.remove(tans.size() - 1);
 
 	}
