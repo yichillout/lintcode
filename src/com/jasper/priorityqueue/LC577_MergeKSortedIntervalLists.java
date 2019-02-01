@@ -7,16 +7,16 @@ import java.util.PriorityQueue;
 
 import com.jasper.array.Interval;
 
-class Pair {
-	int row, col;
-
-	public Pair(int row, int col) {
-		this.row = row;
-		this.col = col;
-	}
-}
-
 public class LC577_MergeKSortedIntervalLists {
+
+	private class Pair {
+		int row, col;
+
+		public Pair(int row, int col) {
+			this.row = row;
+			this.col = col;
+		}
+	}
 
 	public List<Interval> mergeKSortedIntervalLists(List<List<Interval>> intervals) {
 		int k = intervals.size();

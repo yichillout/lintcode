@@ -4,17 +4,17 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-class Pair {
-	String key;
-	int value;
-
-	Pair(String key, int value) {
-		this.key = key;
-		this.value = value;
-	}
-}
-
 public class LC471_TopKFrequentWords {
+
+	private class Pair {
+		String key;
+		int value;
+
+		Pair(String key, int value) {
+			this.key = key;
+			this.value = value;
+		}
+	}
 
 	private Comparator<Pair> pairComparator = new Comparator<Pair>() {
 		public int compare(Pair left, Pair right) {
