@@ -9,7 +9,6 @@ public class LC81_FindMedianFromDataStream {
 	private int numOfElements = 0;
 
 	public int[] medianII(int[] nums) {
-		// write your code here
 		Comparator<Integer> revCmp = new Comparator<Integer>() {
 			@Override
 			public int compare(Integer left, Integer right) {
