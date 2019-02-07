@@ -2,39 +2,35 @@ package com.jasper.twopoint;
 
 public class LC415_ValidPalindrome {
 
+	public boolean isAlphanumeric(char c) {
+		return Character.isLetter(c) || Character.isDigit(c);
+	}
+
 	public boolean isPalindrome(String s) {
+		// write your code here
 		if (s == null || s.length() == 0) {
 			return true;
 		}
 
-		int front = 0;
-		int end = s.length() - 1;
-		while (front < end) {
-			while (front < s.length() && !isvalid(s.charAt(front))) { // nead to check range of a/b
-				front++;
+		int left = 0;
+		int right = s.length() - 1;
+
+		while (left < right) {
+			while (left < right && !isAlphanumeric(s.charAt(left))) {
+				left++;
 			}
 
-			if (front == s.length()) { // for empty string “.,,,”
-				return true;
+			while (left < right && !isAlphanumeric(s.charAt(right))) {
+				right--;
 			}
 
-			while (end >= 0 && !isvalid(s.charAt(end))) { // same here, need to check border of a,b
-				end--;
+			if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+				return false;
 			}
 
-			if (Character.toLowerCase(s.charAt(front)) != Character.toLowerCase(s.charAt(end))) {
-				break;
-			} else {
-				front++;
-				end--;
-			}
+			left++;
+			right--;
 		}
-
-		return end <= front;
+		return true;
 	}
-
-	private boolean isvalid(char c) {
-		return Character.isLetter(c) || Character.isDigit(c);
-	}
-
 }
