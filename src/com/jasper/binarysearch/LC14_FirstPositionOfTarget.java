@@ -16,7 +16,7 @@ public class LC14_FirstPositionOfTarget {
 			} else if (nums[mid] < target) {
 				start = mid;
 			} else {
-				start = mid;
+				end = mid;
 			}
 		}
 
