@@ -1,6 +1,6 @@
 package com.jasper.dfs;
 
-public class LC597_SubtreeWithMaximumsAverage {
+public class LC597_SubtreeWithMaximumAverage {
 
 	private class ResultType {
 		public int sum, size;
