@@ -6,7 +6,7 @@ import java.util.List;
 
 public class LC58_4Sum {
 
-	public List<List<Integer>> fourSum(int[] num, int target) {
+	public List<List<Integer>> fourSum1(int[] num, int target) {
 
 		List<List<Integer>> rst = new ArrayList<List<Integer>>();
 		Arrays.sort(num);
