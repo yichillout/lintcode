@@ -15,7 +15,7 @@ public class LC382_TriangleCount {
 			right = i - 1;
 			while (left < right) {
 				if (S[left] + S[right] > S[i]) {
-					ans = ans + (right - left); // important
+					ans = ans + (right - left); // important 
 					right--;
 				} else {
 					left++;
