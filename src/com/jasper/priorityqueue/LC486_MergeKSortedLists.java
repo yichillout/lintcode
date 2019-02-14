@@ -15,7 +15,7 @@ class Element {
 	}
 }
 
-public class LC104_MergeKSortedLists {
+public class LC486_MergeKSortedLists {
 
 	// Example
 	// Given 3 sorted arrays:
