@@ -13,15 +13,6 @@ class ResultType {
 
 public class LC578_LowestCommonAncestorIII {
 
-	/*
-	 * @param root: The root of the binary tree.
-	 * 
-	 * @param A: A TreeNode
-	 * 
-	 * @param B: A TreeNode
-	 * 
-	 * @return: Return the LCA of the two nodes.
-	 */
 	public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode A, TreeNode B) {
 
 		ResultType result = helper(root, A, B);
