@@ -11,7 +11,8 @@ public class LC533_TwoSumClosest {
 
 		Arrays.sort(nums);
 
-		int left = 0, right = nums.length - 1;
+		int left = 0;
+		int right = nums.length - 1;
 		int diff = Integer.MAX_VALUE;
 
 		while (left < right) {
