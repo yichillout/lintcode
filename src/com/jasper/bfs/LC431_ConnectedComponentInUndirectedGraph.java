@@ -11,8 +11,7 @@ import java.util.Queue;
 public class LC431_ConnectedComponentInUndirectedGraph {
 
 	public List<List<Integer>> connectedSet(List<UndirectedGraphNode> nodes) {
-		// Write your code here
-
+		
 		Map<UndirectedGraphNode, Boolean> visited = new HashMap<>();
 
 		for (UndirectedGraphNode node : nodes) {
