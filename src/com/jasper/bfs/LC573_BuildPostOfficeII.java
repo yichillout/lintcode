@@ -6,55 +6,55 @@ import java.util.Queue;
 public class LC573_BuildPostOfficeII {
 
 	public int shortestDistance(int[][] grid) {
+
 		if (grid == null || grid.length == 0 || grid[0].length == 0) {
 			return -1;
 		}
 
-		int ans = Integer.MAX_VALUE;
+		int result = Integer.MAX_VALUE;
 
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
 				if (grid[i][j] == 0) {
-					ans = Math.min(ans, bfs(grid, i, j));
+					result = Math.min(result, bfs(grid, i, j));
 				}
 			}
 		}
-		return ans == Integer.MAX_VALUE ? -1 : ans;
+		return result == Integer.MAX_VALUE ? -1 : result;
 	}
 
-	private int bfs(int[][] grid, int sx, int sy) {
-		Queue<Integer> qx = new LinkedList<>();
-		Queue<Integer> qy = new LinkedList<>();
-		boolean[][] v = new boolean[grid.length][grid[0].length];
+	private int bfs(int[][] grid, int row, int col) {
 
-		qx.offer(sx);
-		qy.offer(sy);
-		v[sx][sy] = true;
+		Queue<int[]> q = new LinkedList<>();
+		boolean[][] isVisited = new boolean[grid.length][grid[0].length];
+		int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 
-		int[] dx = { 1, -1, 0, 0 };
-		int[] dy = { 0, 0, 1, -1 };
+		q.offer(new int[] { row, col });
+		isVisited[row][col] = true;
 
-		int dist = 0;
+		int distance = 0;
 		int sum = 0;
 
-		while (!qx.isEmpty()) {
-			dist++;
-			int size = qx.size();
-			for (int i = 0; i < size; i++) {
-				int cx = qx.poll();
-				int cy = qy.poll();
-				for (int k = 0; k < 4; k++) {
-					int nx = cx + dx[k];
-					int ny = cy + dy[k];
-					if (0 <= nx && nx < grid.length && 0 <= ny && ny < grid[0].length && !v[nx][ny]) {
-						v[nx][ny] = true;
+		while (!q.isEmpty()) {
 
-						if (grid[nx][ny] == 1) {
-							sum += dist;
+			distance++;
+			int size = q.size();
+
+			for (int i = 0; i < size; i++) {
+				int[] tmp = q.poll();
+				int x = tmp[0];
+				int y = tmp[1];
+				for (int k = 0; k < 4; k++) {
+					int xx = x + dir[k][0];
+					int yy = y + dir[k][1];
+					if (0 <= xx && xx < grid.length && 0 <= yy && yy < grid[0].length && !isVisited[xx][yy]) {
+						isVisited[xx][yy] = true;
+
+						if (grid[xx][yy] == 1) {
+							sum += distance;
 						}
-						if (grid[nx][ny] == 0) {
-							qx.offer(nx);
-							qy.offer(ny);
+						if (grid[xx][yy] == 0) {
+							q.offer(new int[] { xx, yy });
 						}
 					}
 				}
@@ -63,7 +63,7 @@ public class LC573_BuildPostOfficeII {
 
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
-				if (grid[i][j] == 1 && !v[i][j]) {
+				if (grid[i][j] == 1 && !isVisited[i][j]) {
 					return Integer.MAX_VALUE;
 				}
 			}

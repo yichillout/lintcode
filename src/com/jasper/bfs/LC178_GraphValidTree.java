@@ -10,7 +10,7 @@ import java.util.Set;
 public class LC178_GraphValidTree {
 
 	// Solution 1 : BFS
-	public boolean validTree1(int n, int[][] edges) {
+	public static boolean validTree1(int n, int[][] edges) {
 		if (n == 0) {
 			return false;
 		}
@@ -40,7 +40,7 @@ public class LC178_GraphValidTree {
 		return (hash.size() == n);
 	}
 
-	private Map<Integer, Set<Integer>> initializeGraph(int n, int[][] edges) {
+	private static Map<Integer, Set<Integer>> initializeGraph(int n, int[][] edges) {
 		Map<Integer, Set<Integer>> graph = new HashMap<>();
 		for (int i = 0; i < n; i++) {
 			graph.put(i, new HashSet<Integer>());
@@ -105,5 +105,10 @@ public class LC178_GraphValidTree {
 			uf.union(edges[i][0], edges[i][1]);
 		}
 		return true;
+	}
+
+	public static void main(String[] args) {
+		int[][] edges = { { 0, 1 }, { 1, 2 }, { 2, 3 }, { 1, 3 }, { 1, 4 } };
+		System.out.println(validTree1(5, edges));
 	}
 }
