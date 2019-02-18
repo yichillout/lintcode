@@ -1,8 +1,8 @@
 package com.jasper.sort;
 
+// template
 public class LC31_PartitionArray {
 
-	// template
 	public int partitionArray(int[] nums, int k) {
 
 		if (nums == null || nums.length == 0) {
