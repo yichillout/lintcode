@@ -7,20 +7,15 @@ import java.util.List;
 public class LC135_CombinationSum {
 
 	public List<List<Integer>> combinationSum(int[] candidates, int target) {
-		List<List<Integer>> results = new ArrayList<>();
-		if (candidates == null || candidates.length == 0) {
-			return results;
-		}
-
+		List<List<Integer>> result = new ArrayList<>();
+		List<Integer> buffer = new ArrayList<>();
+		Arrays.sort(candidates);
 		int[] nums = removeDuplicates(candidates);
-
-		dfs(nums, 0, new ArrayList<Integer>(), target, results);
-
-		return results;
+		dfs(result, buffer, nums, target, 0);
+		return result;
 	}
 
 	private int[] removeDuplicates(int[] candidates) {
-		Arrays.sort(candidates);
 
 		int index = 0;
 		for (int i = 0; i < candidates.length; i++) {
@@ -37,21 +32,20 @@ public class LC135_CombinationSum {
 		return nums;
 	}
 
-	private void dfs(int[] nums, int startIndex, List<Integer> combination, int remainTarget,
-			List<List<Integer>> results) {
-		
-		if (remainTarget == 0) {
-			results.add(new ArrayList<Integer>(combination));
+	private void dfs(List<List<Integer>> result, List<Integer> buffer, int[] nums, int remainingTarget,
+			int startIndex) {
+		if (remainingTarget == 0) {
+			List<Integer> list = new ArrayList<>(buffer);
+			result.add(list);
 			return;
 		}
 
 		for (int i = startIndex; i < nums.length; i++) {
-			if (remainTarget < nums[i]) {
-				break;
+			if (nums[i] <= remainingTarget) {
+				buffer.add(nums[i]);
+				dfs(result, buffer, nums, remainingTarget - nums[i], i);
+				buffer.remove(buffer.size() - 1);
 			}
-			combination.add(nums[i]);
-			dfs(nums, i, combination, remainTarget - nums[i], results);
-			combination.remove(combination.size() - 1);
 		}
 	}
 

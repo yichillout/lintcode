@@ -7,34 +7,24 @@ import java.util.List;
 public class LC18_SubsetsII {
 
 	public List<List<Integer>> subsetsWithDup(int[] nums) {
-		// write your code here
-		List<List<Integer>> results = new ArrayList<>();
-		if (nums == null)
-			return results;
-
-		if (nums.length == 0) {
-			results.add(new ArrayList<Integer>());
-			return results;
-		}
+		List<List<Integer>> result = new ArrayList<>();
+		List<Integer> buffer = new ArrayList<>();
 		Arrays.sort(nums);
-
-		List<Integer> subset = new ArrayList<>();
-		helper(nums, 0, subset, results);
-
-		return results;
-
+		dfs(result, buffer, nums, 0);
+		return result;
 	}
 
-	public void helper(int[] nums, int startIndex, List<Integer> subset, List<List<Integer>> results) {
-		results.add(new ArrayList<Integer>(subset));
+	private void dfs(List<List<Integer>> result, List<Integer> buffer, int[] nums, int startIndex) {
+
+		result.add(new ArrayList<>(buffer));
+
 		for (int i = startIndex; i < nums.length; i++) {
 			if (i != startIndex && nums[i] == nums[i - 1]) {
 				continue;
 			}
-			subset.add(nums[i]);
-			helper(nums, i + 1, subset, results);
-			subset.remove(subset.size() - 1);
+			buffer.add(nums[i]);
+			dfs(result, buffer, nums, i + 1);
+			buffer.remove(buffer.size() - 1);
 		}
 	}
-
 }
