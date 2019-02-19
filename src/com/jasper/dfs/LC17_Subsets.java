@@ -26,7 +26,7 @@ public class LC17_Subsets {
 	// 1. 递归的定义：在 Nums 中找到所有以 subset 开头的的集合，并放到 results
 	private void helper(ArrayList<Integer> subset, int[] nums, int startIndex, List<List<Integer>> results) {
 		// 2. 递归的拆解
-		// deep copy
+		// deep copy582
 		// results.add(subset);
 		results.add(new ArrayList<Integer>(subset));
 
