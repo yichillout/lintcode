@@ -1,4 +1,4 @@
-package com.jasper.array;
+package com.jasper.interval;
 
 import java.util.ArrayList;
 import java.util.List;

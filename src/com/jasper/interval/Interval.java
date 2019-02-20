@@ -1,4 +1,4 @@
-package com.jasper.array;
+package com.jasper.interval;
 
 public class Interval {
 	public int start;
