@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class LC615CourseSchedule {
+public class LC616_CourseScheduleII {
 
-	public boolean canFinish(int numCourses, int[][] prerequisites) {
-		// Write your code here
+	public int[] findOrder(int numCourses, int[][] prerequisites) {
+
 		List[] edges = new ArrayList[numCourses];
 		int[] degree = new int[numCourses];
 
@@ -28,11 +28,13 @@ public class LC615CourseSchedule {
 		}
 
 		int count = 0;
+		int[] order = new int[numCourses];
 		while (!queue.isEmpty()) {
 			int course = (int) queue.poll();
+			order[count] = course;
 			count++;
 			int n = edges[course].size();
-			for (int i = 0; i < n; i++) {
+			for (int i = n - 1; i >= 0; i--) {
 				int pointer = (int) edges[course].get(i);
 				degree[pointer]--;
 				if (degree[pointer] == 0) {
@@ -41,6 +43,9 @@ public class LC615CourseSchedule {
 			}
 		}
 
-		return count == numCourses;
+		if (count == numCourses)
+			return order;
+
+		return new int[0];
 	}
 }

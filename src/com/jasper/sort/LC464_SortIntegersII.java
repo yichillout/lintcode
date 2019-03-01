@@ -74,7 +74,7 @@ public class LC464_SortIntegersII {
 
 		// merge two sorted subarrays in nums to temp array
 		while (left <= mid && right <= end) {
-			if (nums[left] < nums[right]) {
+			if (nums[left] <= nums[right]) {
 				temp[index++] = nums[left++];
 			} else {
 				temp[index++] = nums[right++];

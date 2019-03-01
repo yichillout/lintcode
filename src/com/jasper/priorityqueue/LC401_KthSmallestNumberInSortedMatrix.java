@@ -7,11 +7,13 @@ public class LC401_KthSmallestNumberInSortedMatrix {
 
 	// Solution 1
 	class Pair {
-		public int x, y, val;
+		int row;
+		int col;
+		int val;
 
-		public Pair(int x, int y, int val) {
-			this.x = x;
-			this.y = y;
+		public Pair(int row, int col, int val) {
+			this.row = row;
+			this.col = col;
 			this.val = val;
 		}
 	}
@@ -23,28 +25,25 @@ public class LC401_KthSmallestNumberInSortedMatrix {
 	}
 
 	public int kthSmallest1(int[][] matrix, int k) {
-		int[] dx = new int[] { 0, 1 };
-		int[] dy = new int[] { 1, 0 };
-		int n = matrix.length;
-		int m = matrix[0].length;
-		boolean[][] hash = new boolean[n][m];
-		PriorityQueue<Pair> minHeap = new PriorityQueue<Pair>(k, new PairComparator());
-		minHeap.add(new Pair(0, 0, matrix[0][0]));
 
-		for (int i = 0; i < k - 1; i++) {
-			Pair cur = minHeap.poll();
-			for (int j = 0; j < 2; j++) {
-				int next_x = cur.x + dx[j];
-				int next_y = cur.y + dy[j];
-				Pair next_Pair = new Pair(next_x, next_y, 0);
-				if (next_x < n && next_y < m && !hash[next_x][next_y]) {
-					hash[next_x][next_y] = true;
-					next_Pair.val = matrix[next_x][next_y];
-					minHeap.add(next_Pair);
-				}
+		PriorityQueue<Pair> pq = new PriorityQueue<>(k, new PairComparator());
+
+		for (int i = 0; i < matrix.length; i++) {
+			if (matrix[i].length != 0) {
+				pq.offer(new Pair(i, 0, matrix[i][0]));
 			}
 		}
-		return minHeap.peek().val;
+
+		for (int i = 0; i < k - 1; i++) {
+			Pair pair = pq.poll();
+			if (pair.col + 1 < matrix[0].length) {
+				pair.col++;
+				pair.val = matrix[pair.row][pair.col];
+				pq.offer(pair);
+			}
+		}
+
+		return pq.peek().val;
 	}
 
 	// Solution 2 : 二分法
