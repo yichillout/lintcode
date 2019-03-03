@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //***Template***
-public class LC680 {
+public class LC680_SplitString {
 
 	public List<List<String>> splitString(String s) {
 
