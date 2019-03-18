@@ -20,72 +20,58 @@ import java.util.List;
  * return [1,1,2,2].
  */
 
+class Point {
+	int x;
+	int y;
+
+	Point() {
+		x = 0;
+		y = 0;
+	}
+}
+
 public class LC434_NumberOfIslandsII {
 
-	class Point {
-		int x;
-		int y;
-
-		Point() {
-			x = 0;
-			y = 0;
-		}
-
-		Point(int a, int b) {
-			x = a;
-			y = b;
-		}
-	}
-
-	int converttoId(int x, int y, int m) {
-		return x * m + y;
+	int converttoId(int row, int col, int m) {
+		return row * m + col;
 	}
 
 	class UnionFind {
-		HashMap<Integer, Integer> father = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> parents = new HashMap<Integer, Integer>();
 
 		UnionFind(int n, int m) {
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < m; j++) {
 					int id = converttoId(i, j, m);
-					father.put(id, id);
+					parents.put(id, id);
 				}
 			}
 		}
 
-		int compressed_find(int x) {
-			int parent = father.get(x);
-			while (parent != father.get(parent)) {
-				parent = father.get(parent);
+		int find(int id) {
+			if (parents.get(id) != id) {
+				parents.put(id, find(parents.get(id)));
 			}
-			int temp = -1;
-			int fa = x;
-			while (fa != father.get(fa)) {
-				temp = father.get(fa);
-				father.put(fa, parent);
-				fa = temp;
-			}
-			return parent;
-
+			return parents.get(id);
 		}
 
-		void union(int x, int y) {
-			int fa_x = compressed_find(x);
-			int fa_y = compressed_find(y);
-			if (fa_x != fa_y)
-				father.put(fa_x, fa_y);
+		void union(int id1, int id2) {
+			int p1 = find(id1);
+			int p2 = find(id2);
+			if (p1 != p2)
+				parents.put(p1, p2);
 		}
 	}
 
 	public List<Integer> numIslands2(int n, int m, Point[] operators) {
 
-		List<Integer> ans = new ArrayList<Integer>();
+		List<Integer> results = new ArrayList<Integer>();
 		if (operators == null) {
-			return ans;
+			return results;
 		}
 
-		int[] dx = { 0, -1, 0, 1 };
-		int[] dy = { 1, 0, -1, 0 };
+		int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
 		int[][] island = new int[n][m];
 
 		UnionFind uf = new UnionFind(n, m);
@@ -94,28 +80,26 @@ public class LC434_NumberOfIslandsII {
 		for (int i = 0; i < operators.length; i++) {
 			int x = operators[i].x;
 			int y = operators[i].y;
-			if (island[x][y] != 1) {
+			if (island[x][y] == 0) {
 				count++;
 				island[x][y] = 1;
-				int id = converttoId(x, y, m);
 				for (int j = 0; j < 4; j++) {
-					int nx = x + dx[j];
-					int ny = y + dy[j];
-					if (0 <= nx && nx < n && 0 <= ny && ny < m && island[nx][ny] == 1) {
-						int nid = converttoId(nx, ny, m);
-
-						int fa = uf.compressed_find(id);
-						int nfa = uf.compressed_find(nid);
-						if (fa != nfa) {
+					int xx = x + dir[j][0];
+					int yy = y + dir[j][1];
+					if (0 <= xx && xx < n && 0 <= yy && yy < m && island[xx][yy] == 1) {
+						int id1 = converttoId(x, y, m);
+						int id2 = converttoId(xx, yy, m);
+						int p1 = uf.find(id1);
+						int p2 = uf.find(id2);
+						if (p1 != p2) {
 							count--;
-							uf.union(id, nid);
+							uf.union(id1, id2);
 						}
 					}
 				}
 			}
-			ans.add(count);
+			results.add(count);
 		}
-		return ans;
+		return results;
 	}
-
 }

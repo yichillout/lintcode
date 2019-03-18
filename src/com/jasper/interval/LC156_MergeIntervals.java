@@ -20,18 +20,16 @@ public class LC156_MergeIntervals {
 			}
 		});
 
-		Interval prev = intervals.get(0);
+		Interval prev = null;
 
-		for (int i = 1; i < intervals.size(); i++) {
-			if (prev.end >= intervals.get(i).start) {
-				prev.end = Math.max(prev.end, intervals.get(i).end);
+		for (Interval interval : intervals) {
+			if (prev == null || prev.end < interval.start) {
+				result.add(interval);
+				prev = interval;
 			} else {
-				result.add(prev);
-				prev = intervals.get(i);
+				prev.end = Math.max(prev.end, interval.end);
 			}
 		}
-
-		result.add(prev);
 
 		return result;
 	}

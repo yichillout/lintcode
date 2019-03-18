@@ -59,8 +59,6 @@ public class LC892_AlienDictionary {
 
 	private String topologicalSorting(Map<Character, Set<Character>> graph) {
 		Map<Character, Integer> indegree = getIndegree(graph);
-		// as we should return the topo order with lexicographical order
-		// we should use PriorityQueue instead of a FIFO Queue
 		Queue<Character> queue = new PriorityQueue<>();
 
 		for (Character u : indegree.keySet()) {
