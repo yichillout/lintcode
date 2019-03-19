@@ -7,7 +7,8 @@ public class LC159_FindMinimumInRotatedSortedArray {
 			return -1;
 		}
 
-		int start = 0, end = nums.length - 1;
+		int start = 0;
+		int end = nums.length - 1;
 		int target = nums[nums.length - 1];
 
 		// find the first element <= target

@@ -9,29 +9,21 @@ public class LC156_MergeIntervals {
 
 	public List<Interval> merge(List<Interval> intervals) {
 
-		List<Interval> result = new ArrayList<>();
+		List<Interval> results = new ArrayList<>();
 
-		if (intervals == null || intervals.size() == 0)
-			return result;
+		Collections.sort(intervals, (x, y) -> x.start - y.start);
 
-		Collections.sort(intervals, new Comparator<Interval>() {
-			public int compare(Interval interval1, Interval interval2) {
-				return interval1.start - interval2.start;
-			}
-		});
-
-		Interval prev = null;
+		Interval pre = null;
 
 		for (Interval interval : intervals) {
-			if (prev == null || prev.end < interval.start) {
-				result.add(interval);
-				prev = interval;
+			if (pre == null || pre.end < interval.start) {
+				results.add(interval);
+				pre = interval;
 			} else {
-				prev.end = Math.max(prev.end, interval.end);
+				pre.end = Math.max(pre.end, interval.end);
 			}
 		}
 
-		return result;
+		return results;
 	}
-
 }

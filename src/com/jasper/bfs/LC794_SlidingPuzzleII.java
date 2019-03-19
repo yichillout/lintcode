@@ -10,6 +10,7 @@ import java.util.Set;
 public class LC794_SlidingPuzzleII {
 
 	public int minMoveStep(int[][] init_state, int[][] final_state) {
+
 		String source = matrixToString(init_state);
 		String target = matrixToString(final_state);
 
@@ -23,12 +24,12 @@ public class LC794_SlidingPuzzleII {
 		while (!queue.isEmpty()) {
 			int size = queue.size();
 			for (int i = 0; i < size; i++) {
-				String curt = queue.poll();
-				if (curt.equals(target)) {
+				String cur = queue.poll();
+				if (cur.equals(target)) {
 					return step;
 				}
 
-				for (String next : getNext(curt)) {
+				for (String next : getNext(cur)) {
 					if (visited.contains(next)) {
 						continue;
 					}
@@ -54,26 +55,26 @@ public class LC794_SlidingPuzzleII {
 
 	public List<String> getNext(String state) {
 		List<String> states = new ArrayList<>();
-		int[] dx = { 0, 1, -1, 0 };
-		int[] dy = { 1, 0, 0, -1 };
+		int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 
 		int zeroIndex = state.indexOf('0');
 		int x = zeroIndex / 3;
 		int y = zeroIndex % 3;
 
 		for (int i = 0; i < 4; i++) {
-			int x_ = x + dx[i];
-			int y_ = y + dy[i];
-			if (x_ < 0 || x_ >= 3 || y_ < 0 || y_ >= 3) {
+			int xx = x + dir[i][0];
+			int yy = y + dir[i][1];
+			if (xx < 0 || xx >= 3 || yy < 0 || yy >= 3) {
 				continue;
 			}
 
 			char[] chars = state.toCharArray();
-			chars[x * 3 + y] = chars[x_ * 3 + y_];
-			chars[x_ * 3 + y_] = '0';
+			chars[x * 3 + y] = chars[xx * 3 + yy];
+			chars[xx * 3 + yy] = '0';
 			states.add(new String(chars));
 		}
 
 		return states;
 	}
+
 }

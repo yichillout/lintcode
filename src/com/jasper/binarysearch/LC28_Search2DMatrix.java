@@ -56,31 +56,39 @@ public class LC28_Search2DMatrix {
 	}
 
 	// Binary Search Once
-	public boolean searchMatrix2(int[][] matrix, int target) {
+	public boolean searchMatrix(int[][] matrix, int target) {
 
-		if (matrix == null || matrix.length == 0) {
+		if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
 			return false;
-		}
 
-		if (matrix[0] == null || matrix[0].length == 0) {
-			return false;
-		}
+		int n = matrix.length;
+		int m = matrix[0].length;
 
-		int row = matrix.length;
-		int column = matrix[0].length;
+		int start = 0;
+		int end = n * m - 1;
 
-		int start = 0, end = row * column - 1;
-		while (start <= end) {
+		while (start + 1 < end) {
 			int mid = start + (end - start) / 2;
-			int number = matrix[mid / column][mid % column];
-			if (number == target) {
+			int x = mid / m;
+			int y = mid % m;
+			if (matrix[x][y] == target) {
 				return true;
-			} else if (number > target) {
-				end = mid - 1;
+			} else if (matrix[x][y] < target) {
+				start = mid;
 			} else {
-				start = mid + 1;
+				end = mid;
 			}
 		}
+
+		int xs = start / m;
+		int ys = start % m;
+		if (matrix[xs][ys] == target)
+			return true;
+
+		int xe = end / m;
+		int ye = end % m;
+		if (matrix[xe][ye] == target)
+			return true;
 
 		return false;
 	}

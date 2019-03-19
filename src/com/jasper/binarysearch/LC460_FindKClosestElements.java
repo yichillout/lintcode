@@ -29,16 +29,19 @@ public class LC460_FindKClosestElements {
 			return true;
 		}
 
-		if (target - A[left] != A[right] - target) {
-			return target - A[left] < A[right] - target;
-		}
+		int l = Math.abs(A[left] - target);
+		int r = Math.abs(A[right] - target);
 
-		return true;
+		if (l <= r)
+			return true;
+		else
+			return false;
 	}
 
 	private int findLowerClosest(int[] A, int target) {
 		// find the last element smaller than target
-		int start = 0, end = A.length - 1;
+		int start = 0;
+		int end = A.length - 1;
 		while (start + 1 < end) {
 			int mid = start + (end - start) / 2;
 			if (A[mid] == target) {
