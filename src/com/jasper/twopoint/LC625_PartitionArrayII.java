@@ -7,7 +7,8 @@ public class LC625_PartitionArrayII {
 			return;
 		}
 
-		int pl = 0, pr = nums.length - 1;
+		int pl = 0;
+		int pr = nums.length - 1;
 		int i = 0;
 		while (i <= pr) {
 			if (nums[i] < low) {

@@ -5,15 +5,14 @@ import java.util.Random;
 // ***Template***
 public class LC464_SortIntegersII {
 
-	public Random rand;
+	Random rand;
 
-	// Solution 1 : quick sort
 	public void sortIntegers1(int[] nums) {
 		rand = new Random();
 		quickSort(nums, 0, nums.length - 1);
 	}
 
-	public void quickSort(int[] nums, int start, int end) {
+	private void quickSort(int[] nums, int start, int end) {
 		if (start >= end) {
 			return;
 		}
@@ -22,29 +21,31 @@ public class LC464_SortIntegersII {
 		int pivot = nums[index];
 		int left = start;
 		int right = end;
+		int i = start;
 
-		while (left <= right) {
-			while (left <= right && nums[left] < pivot) {
+		while (i <= right) {
+			if (nums[i] < pivot) {
+				swap(nums, i, left);
 				left++;
-			}
-			while (left <= right && nums[right] > pivot) {
+				i++;
+			} else if (nums[i] > pivot) {
+				swap(nums, i, right);
 				right--;
-			}
-
-			if (left <= right) {
-				int temp = nums[left];
-				nums[left] = nums[right];
-				nums[right] = temp;
-
-				left++;
-				right--;
+			} else {
+				i++;
 			}
 		}
 
 		// nums[start... right]
-		quickSort(nums, start, right);
+		quickSort(nums, start, left - 1);
 		// nums[left ... end]
-		quickSort(nums, left, end);
+		quickSort(nums, right + 1, end);
+	}
+
+	private void swap(int[] nums, int index1, int index2) {
+		int tmp = nums[index1];
+		nums[index1] = nums[index2];
+		nums[index2] = tmp;
 	}
 
 	// Solution 2 : merge sort
@@ -59,7 +60,6 @@ public class LC464_SortIntegersII {
 			return;
 		}
 
-		int left = start, right = end;
 		int mid = (start + end) / 2;
 
 		mergeSort(nums, start, mid, temp);

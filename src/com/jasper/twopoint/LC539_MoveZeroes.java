@@ -43,11 +43,37 @@ public class LC539_MoveZeroes {
 			while (start < end && nums[end] == 0) {
 				end--;
 			}
-			if (start < end) {
+			if (start < end) { // important
 				swap(nums, start, end);
 			}
 		}
 
+	}
+
+	// Solution 3
+	public void moveZeroes3(int[] nums) {
+		if (nums == null || nums.length == 0) {
+			return;
+		}
+
+		int j = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i] != 0) {
+				if (j != i) {
+					nums[j] = nums[i];
+				}
+				j++;
+			}
+		}
+
+		System.out.println("j:" + j);
+
+		for (int i = j; i < nums.length; i++) {
+			if (nums[i] != 0) { // int case of [4]
+				nums[i] = 0;
+			}
+		}
+		return;
 	}
 
 }

@@ -16,7 +16,7 @@ public class LC31_PartitionArray {
 				j++;
 			}
 		}
-
+		// j最后的位置是第一个等于k
 		return j;
 	}
 

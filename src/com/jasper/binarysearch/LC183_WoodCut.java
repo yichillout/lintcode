@@ -4,27 +4,28 @@ public class LC183_WoodCut {
 
 	public int woodCut(int[] L, int k) {
 
-		int l = 1;
-		int r = 0;
+		int start = 1;
+		int end = 0;
+
 		for (int item : L) {
-			r = Math.max(r, item);
+			end = Math.max(end, item);
 		}
 
-		while (l + 1 < r) {
-			int mid = l + (r - l) / 2;
+		while (start + 1 < end) {
+			int mid = start + (end - start) / 2;
 			if (count(L, mid) >= k) {
-				l = mid;
+				start = mid;
 			} else {
-				r = mid;
+				end = mid;
 			}
 		}
 
-		if (count(L, r) >= k) {
-			return r;
+		if (count(L, end) >= k) {
+			return end;
 		}
 
-		if (count(L, l) >= k) {
-			return l;
+		if (count(L, start) >= k) {
+			return start;
 		}
 		return 0;
 	}

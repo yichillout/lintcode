@@ -2,6 +2,10 @@ package com.jasper.binarysearch;
 
 public class LC428_PowX {
 
+	// 3 -> 11
+	// 6 -> 110
+	// 当是1的时候, 乘以base
+
 	public double myPow(double x, int n) {
 
 		boolean isNegative = false;

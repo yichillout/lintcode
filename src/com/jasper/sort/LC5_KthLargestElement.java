@@ -14,7 +14,8 @@ public class LC5_KthLargestElement {
 			return nums[k];
 		}
 
-		int left = start, right = end;
+		int left = start;
+		int right = end;
 		int pivot = nums[(start + end) / 2];
 
 		while (left <= right) {
