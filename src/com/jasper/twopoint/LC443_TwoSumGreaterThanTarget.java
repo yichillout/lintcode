@@ -11,14 +11,16 @@ public class LC443_TwoSumGreaterThanTarget {
 
 		Arrays.sort(nums);
 
-		int left = 0, right = nums.length - 1;
+		int left = 0;
+		int right = nums.length - 1;
 		int count = 0;
+
 		while (left < right) {
-			if (nums[left] + nums[right] <= target) {
-				left++;
-			} else {
+			if (nums[left] + nums[right] > target) {
 				count += right - left;
 				right--;
+			} else {
+				left++;
 			}
 		}
 

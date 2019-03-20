@@ -20,19 +20,18 @@ class Point {
 public class LC611_KnightShortestPath {
 
 	public int shortestPath(boolean[][] grid, Point source, Point destination) {
-		// write your code here
+
 		if (grid == null || grid.length == 0 || grid[0].length == 0) {
 			return -1;
 		}
 
-		int[] dx = { 1, 1, -1, -1, 2, 2, -2, -2 };
-		int[] dy = { 2, -2, 2, -2, 1, -1, 1, -1 };
+		int[][] dir = { { 1, 2 }, { 1, -2 }, { 2, 1 }, { 2, -1 }, { -1, 2 }, { -1, -2 }, { -2, 1 }, { -2, -1 } };
 
 		Queue<Point> q = new LinkedList<>();
-		boolean[][] v = new boolean[grid.length][grid[0].length]; // Set<Point> v will TLE
+		boolean[][] isVisited = new boolean[grid.length][grid[0].length]; // Set<Point> v will TLE
 
 		q.offer(source);
-		v[source.x][source.y] = true;
+		isVisited[source.x][source.y] = true;
 
 		if (source.x == destination.x && source.y == destination.y) {
 			return 0;
@@ -46,14 +45,15 @@ public class LC611_KnightShortestPath {
 			for (int i = 0; i < size; i++) {
 				Point cur = q.poll();
 				for (int k = 0; k < 8; k++) {
-					int nx = cur.x + dx[k];
-					int ny = cur.y + dy[k];
-					if (0 <= nx && nx < grid.length && 0 <= ny && ny < grid[0].length && !grid[nx][ny] && !v[nx][ny]) {
-						if (nx == destination.x && ny == destination.y) {
+					int xx = cur.x + dir[k][0];
+					int yy = cur.y + dir[k][1];
+					if (0 <= xx && xx < grid.length && 0 <= yy && yy < grid[0].length && !grid[xx][yy]
+							&& !isVisited[xx][yy]) {
+						if (xx == destination.x && yy == destination.y) {
 							return dist;
 						}
-						q.offer(new Point(nx, ny));
-						v[nx][ny] = true;
+						q.offer(new Point(xx, yy));
+						isVisited[xx][yy] = true;
 					}
 				}
 			}

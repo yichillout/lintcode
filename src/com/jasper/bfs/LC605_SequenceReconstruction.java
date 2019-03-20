@@ -1,8 +1,11 @@
 package com.jasper.bfs;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -11,51 +14,82 @@ public class LC605_SequenceReconstruction {
 
 	public boolean sequenceReconstruction(int[] org, int[][] seqs) {
 
-		Map<Integer, Set<Integer>> map = new HashMap<Integer, Set<Integer>>();
-		Map<Integer, Integer> indegree = new HashMap<Integer, Integer>();
+		Map<Integer, Set<Integer>> graph = build(seqs);
+		Map<Integer, Integer> inDegrees = getInDegrees(seqs, graph);
 
-		for (int num : org) {
-			map.put(num, new HashSet<Integer>());
-			indegree.put(num, 0);
-		}
+		Queue<Integer> queue = new LinkedList<>();
+		List<Integer> result = new ArrayList<>();
 
-		int n = org.length;
-		int count = 0;
-		for (int[] seq : seqs) {
-			count += seq.length;
-			if (seq.length >= 1 && (seq[0] <= 0 || seq[0] > n))
-				return false;
-			for (int i = 1; i < seq.length; i++) {
-				if (seq[i] <= 0 || seq[i] > n)
-					return false;
-				if (map.get(seq[i - 1]).add(seq[i]))
-					indegree.put(seq[i], indegree.get(seq[i]) + 1);
+		for (int key : inDegrees.keySet()) {
+			if (inDegrees.get(key) == 0) {
+				queue.offer(key);
+				result.add(key);
 			}
 		}
 
-		// case: [1], []
-		if (count < n)
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			if (size > 1) {
+				return false;
+			}
+			int num = queue.poll();
+
+			// in case of NullPointerException
+			// when buiding the graph, some of the number is not put into the graph
+			if (!graph.containsKey(num)) {
+				continue;
+			}
+
+			for (int next : graph.get(num)) {
+				inDegrees.put(next, inDegrees.get(next) - 1);
+				if (inDegrees.get(next) == 0) {
+					queue.offer(next);
+					result.add(next);
+				}
+			}
+		}
+
+		if (result.size() != org.length) {
 			return false;
-
-		Queue<Integer> q = new ArrayDeque<Integer>();
-		for (int key : indegree.keySet())
-			if (indegree.get(key) == 0)
-				q.add(key);
-
-		int cnt = 0;
-		while (q.size() == 1) {
-			int ele = q.poll();
-			for (int next : map.get(ele)) {
-				indegree.put(next, indegree.get(next) - 1);
-				if (indegree.get(next) == 0)
-					q.add(next);
-			}
-			if (ele != org[cnt]) {
+		}
+		for (int i = 0; i < org.length; i++) {
+			if (org[i] != result.get(i)) {
 				return false;
 			}
-			cnt++;
+		}
+		return true;
+	}
+
+	private Map<Integer, Integer> getInDegrees(int[][] seqs, Map<Integer, Set<Integer>> graph) {
+		Map<Integer, Integer> inDegrees = new HashMap<>();
+		for (int i = 0; i < seqs.length; i++) {
+			for (int j = 0; j < seqs[i].length; j++) {
+				inDegrees.put(seqs[i][j], 0);
+			}
 		}
 
-		return cnt == org.length;
+		for (int key : graph.keySet()) {
+			for (int next : graph.get(key)) {
+				inDegrees.put(next, inDegrees.get(next) + 1);
+			}
+		}
+		return inDegrees;
+	}
+
+	private Map<Integer, Set<Integer>> build(int[][] seqs) {
+		Map<Integer, Set<Integer>> graph = new HashMap<>();
+		for (int i = 0; i < seqs.length; i++) {
+			for (int j = 0; j < seqs[i].length - 1; j++) {
+				int num1 = seqs[i][j];
+				int num2 = seqs[i][j + 1];
+				if (!graph.containsKey(num1)) {
+					graph.put(num1, new HashSet<Integer>());
+					graph.get(num1).add(num2);
+				} else {
+					graph.get(num1).add(num2);
+				}
+			}
+		}
+		return graph;
 	}
 }
