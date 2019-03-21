@@ -20,69 +20,47 @@ class DirectedGraphNode {
 public class LC127_TopologicalSorting {
 
 	public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
-		ArrayList<DirectedGraphNode> order = new ArrayList<DirectedGraphNode>();
 
-		// count indegree
-		Map<DirectedGraphNode, Integer> map = getIndegree(graph);
-
-		// topological sorting - bfs
-		List<DirectedGraphNode> nodes = getStartNodes(map, graph);
-		order = bfs(map, nodes);
-
-		// in case of cycle
-		if (order.size() == graph.size()) {
-			return order;
-		}
-
-		return null;
-	}
-
-	private List<DirectedGraphNode> getStartNodes(Map<DirectedGraphNode, Integer> map,
-			ArrayList<DirectedGraphNode> graph) {
-		List<DirectedGraphNode> nodes = new ArrayList<DirectedGraphNode>();
-		for (DirectedGraphNode node : graph) {
-			if (map.get(node) == 0) {
-				nodes.add(node);
-			}
-		}
-		return nodes;
-	}
-
-	private Map<DirectedGraphNode, Integer> getIndegree(ArrayList<DirectedGraphNode> graph) {
-		Map<DirectedGraphNode, Integer> map = new HashMap<>();
-		for (DirectedGraphNode node : graph) {
-			map.put(node, 0);
-		}
-
-		for (DirectedGraphNode node : graph) {
-			for (DirectedGraphNode neighbor : node.neighbors) {
-				map.put(neighbor, map.get(neighbor) + 1);
-			}
-		}
-		return map;
-	}
-
-	private ArrayList<DirectedGraphNode> bfs(Map<DirectedGraphNode, Integer> map, List<DirectedGraphNode> nodes) {
-		ArrayList<DirectedGraphNode> order = new ArrayList<>();
+		Map<DirectedGraphNode, Integer> inDegrees = getInDegrees(graph);
 		Queue<DirectedGraphNode> queue = new LinkedList<>();
+		ArrayList<DirectedGraphNode> list = new ArrayList<>();
 
-		for (DirectedGraphNode node : nodes) {
-			order.add(node);
-			queue.offer(node);
+		for (DirectedGraphNode graphNode : inDegrees.keySet()) {
+			if (inDegrees.get(graphNode) == 0) {
+				queue.offer(graphNode);
+				list.add(graphNode);
+			}
 		}
 
 		while (!queue.isEmpty()) {
-			DirectedGraphNode node = queue.poll();
-			for (DirectedGraphNode neighbor : node.neighbors) {
-				map.put(neighbor, map.get(neighbor) - 1);
-				if (map.get(neighbor) == 0) {
+			DirectedGraphNode tmp = queue.poll();
+			for (DirectedGraphNode neighbor : tmp.neighbors) {
+				inDegrees.put(neighbor, inDegrees.get(neighbor) - 1);
+				if (inDegrees.get(neighbor) == 0) {
 					queue.offer(neighbor);
-					order.add(neighbor);
+					list.add(neighbor);
 				}
 			}
 		}
 
-		return order;
+		if (list.size() != graph.size())
+			return null;
+
+		return list;
 	}
 
+	private Map<DirectedGraphNode, Integer> getInDegrees(ArrayList<DirectedGraphNode> graph) {
+		Map<DirectedGraphNode, Integer> inDegrees = new HashMap<>();
+
+		for (DirectedGraphNode graphNode : graph) {
+			inDegrees.put(graphNode, 0);
+		}
+
+		for (DirectedGraphNode graphNode : graph) {
+			for (DirectedGraphNode neighbor : graphNode.neighbors) {
+				inDegrees.put(neighbor, inDegrees.get(neighbor) + 1);
+			}
+		}
+		return inDegrees;
+	}
 }

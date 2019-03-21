@@ -1,53 +1,81 @@
 package com.jasper.dfs;
 
-class ResultType {
-	public boolean a_exist, b_exist;
-	public TreeNode node;
-
-	ResultType(boolean a, boolean b, TreeNode n) {
-		a_exist = a;
-		b_exist = b;
-		node = n;
-	}
-}
-
 public class LC578_LowestCommonAncestorIII {
 
-	public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode A, TreeNode B) {
+	// Solution 1 : divide and conquer
+	class ResultType {
+		TreeNode maxNode;
+		TreeNode minNode;
+		boolean isBST;
 
-		ResultType result = helper(root, A, B);
-		if (result.a_exist && result.b_exist) {
-			return result.node;
+		public ResultType(boolean isBST) {
+			this.isBST = isBST;
+			maxNode = null;
+			minNode = null;
+		}
+	}
+
+	public boolean isValidBST1(TreeNode root) {
+		ResultType rt = helper(root);
+		return rt.isBST;
+	}
+
+	public ResultType helper(TreeNode root) {
+
+		if (root == null)
+			return new ResultType(true);
+
+		ResultType l = helper(root.left);
+		ResultType r = helper(root.right);
+
+		if (l.isBST == false || r.isBST == false)
+			return new ResultType(false);
+
+		if (l.maxNode != null && l.maxNode.val >= root.val)
+			return new ResultType(false);
+
+		if (r.minNode != null && r.minNode.val <= root.val)
+			return new ResultType(false);
+
+		ResultType rt = new ResultType(true);
+		if (l.minNode != null) {
+			rt.minNode = l.minNode;
+		} else {
+			rt.minNode = root;
+		}
+		if (r.maxNode != null) {
+			rt.maxNode = r.maxNode;
+		} else {
+			rt.maxNode = root;
 		}
 
-		return null;
+		return rt;
 	}
 
-	private ResultType helper(TreeNode node, TreeNode A, TreeNode B) {
+	// Solution 2 : Traversal
+	private int lastVal = Integer.MIN_VALUE;
+	private boolean firstNode = true;
 
-		if (node == null)
-			return new ResultType(false, false, null);
+	public boolean isValidBST2(TreeNode root) {
 
-		ResultType leftResult = helper(node.left, A, B);
-		ResultType rightResult = helper(node.right, A, B);
+		if (root == null) {
+			return true;
+		}
 
-		boolean a_exist = leftResult.a_exist || rightResult.a_exist || node == A;
-		boolean b_exist = leftResult.b_exist || rightResult.b_exist || node == B;
+		if (!isValidBST2(root.left)) {
+			return false;
+		}
 
-		if (node == A || node == B)
-			return new ResultType(a_exist, b_exist, node);
+		if (!firstNode && lastVal >= root.val) {
+			return false;
+		}
 
-		if (leftResult.node != null && rightResult.node != null)
-			return new ResultType(a_exist, b_exist, node);
+		firstNode = false;
+		lastVal = root.val;
+		if (!isValidBST2(root.right)) {
+			return false;
+		}
 
-		if (leftResult.node != null)
-			return new ResultType(a_exist, b_exist, leftResult.node);
-
-		if (rightResult.node != null)
-			return new ResultType(a_exist, b_exist, rightResult.node);
-
-		return new ResultType(a_exist, b_exist, null);
-
+		return true;
 	}
-
 }

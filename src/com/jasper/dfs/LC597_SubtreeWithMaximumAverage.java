@@ -2,36 +2,42 @@ package com.jasper.dfs;
 
 public class LC597_SubtreeWithMaximumAverage {
 
-	private class ResultType {
-		public int sum, size;
+	class ResultType {
+		TreeNode node;
+		int sum;
+		int count;
 
-		public ResultType(int sum, int size) {
+		public ResultType(TreeNode node, int sum, int count) {
+			this.node = node;
 			this.sum = sum;
-			this.size = size;
+			this.count = count;
 		}
+
 	}
 
-	private TreeNode subtree = null;
-	private ResultType subtreeResult = null;
+	ResultType finalResult = new ResultType(null, 0, 0);
 
 	public TreeNode findSubtree2(TreeNode root) {
 		helper(root);
-		return subtree;
+		return finalResult.node;
 	}
 
-	private ResultType helper(TreeNode root) {
-		if (root == null) {
-			return new ResultType(0, 0);
+	private ResultType helper(TreeNode node) {
+
+		if (node == null)
+			return new ResultType(null, 0, 0);
+
+		ResultType left = helper(node.left);
+		ResultType right = helper(node.right);
+
+		ResultType result = new ResultType(node, node.val + left.sum + right.sum, 1 + left.count + right.count);
+
+		if (finalResult.node == null || finalResult.sum * result.count < result.sum * finalResult.count) {
+			finalResult.node = result.node;
+			finalResult.sum = result.sum;
+			finalResult.count = result.count;
 		}
 
-		ResultType left = helper(root.left);
-		ResultType right = helper(root.right);
-		ResultType result = new ResultType(left.sum + right.sum + root.val, left.size + right.size + 1);
-
-		if (subtree == null || subtreeResult.sum * result.size < result.sum * subtreeResult.size) {
-			subtree = root;
-			subtreeResult = result;
-		}
 		return result;
 	}
 }

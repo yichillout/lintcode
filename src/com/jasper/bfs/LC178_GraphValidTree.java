@@ -58,52 +58,52 @@ public class LC178_GraphValidTree {
 
 	// Solution 2 : Union Find
 	class UnionFind {
-		HashMap<Integer, Integer> father = new HashMap<Integer, Integer>();
 
-		UnionFind(int n) {
+		Map<Integer, Integer> parents;
+
+		public UnionFind(int n) {
+			parents = new HashMap<Integer, Integer>();
 			for (int i = 0; i < n; i++) {
-				father.put(i, i);
+				parents.put(i, i);
 			}
 		}
 
-		int compressed_find(int x) {
-			int parent = father.get(x);
-			while (parent != father.get(parent)) {
-				parent = father.get(parent);
-			}
-			int temp = -1;
-			int fa = father.get(x);
-			while (fa != father.get(fa)) {
-				temp = father.get(fa);
-				father.put(fa, parent);
-				fa = temp;
-			}
-			return parent;
+		public void union(int n1, int n2) {
+			int p1 = find(n1);
+			int p2 = find(n2);
 
+			if (p1 == p2)
+				return;
+
+			parents.put(p1, p2);
 		}
 
-		void union(int x, int y) {
-			int fa_x = compressed_find(x);
-			int fa_y = compressed_find(y);
-			if (fa_x != fa_y)
-				father.put(fa_x, fa_y);
+		public int find(int n) {
+			if (parents.get(n) != n) {
+				parents.put(n, find(parents.get(n)));
+			}
+			return parents.get(n);
 		}
+
 	}
 
 	public boolean validTree2(int n, int[][] edges) {
-		// tree should have n nodes with n-1 edges
+
 		if (n - 1 != edges.length) {
 			return false;
 		}
 
 		UnionFind uf = new UnionFind(n);
 
-		for (int i = 0; i < edges.length; i++) {
-			if (uf.compressed_find(edges[i][0]) == uf.compressed_find(edges[i][1])) {
+		for (int[] edge : edges) {
+			int p1 = uf.find(edge[0]);
+			int p2 = uf.find(edge[1]);
+			if (p1 == p2) {
 				return false;
 			}
-			uf.union(edges[i][0], edges[i][1]);
+			uf.union(edge[0], edge[1]);
 		}
+
 		return true;
 	}
 

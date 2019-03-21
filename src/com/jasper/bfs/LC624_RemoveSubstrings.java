@@ -8,45 +8,30 @@ import java.util.Set;
 public class LC624_RemoveSubstrings {
 
 	public int minLength(String s, Set<String> dict) {
-		if (s == null || s.length() == 0) {
-			return 0;
-		}
-		if (dict == null || dict.size() == 0) {
-			return s.length();
-		}
+		// Write your code here
+		Queue<String> que = new LinkedList<String>();
+		Set<String> hash = new HashSet<String>();
 
-		int result = s.length();
+		int min = s.length();
+		que.offer(s);
+		hash.add(s);
 
-		Queue<String> queue = new LinkedList<>();
-		Set<String> set = new HashSet<>();
-		queue.offer(s);
-		set.add(s);
-
-		while (!queue.isEmpty()) {
-			String str = queue.poll();
-			result = Math.min(result, str.length());
-			for (String d : dict) {
-				for (String subS : indexes(str, d, set)) {
-					queue.offer(subS);
-					set.add(subS);
+		while (!que.isEmpty()) {
+			s = que.poll();
+			for (String sub : dict) {
+				int found = s.indexOf(sub);
+				while (found != -1) {
+					String new_s = s.substring(0, found) + s.substring(found + sub.length(), s.length());
+					if (!hash.contains(new_s)) {
+						if (new_s.length() < min)
+							min = new_s.length();
+						que.offer(new_s);
+						hash.add(new_s);
+					}
+					found = s.indexOf(sub, found + 1);
 				}
 			}
 		}
-		return result;
-	}
-
-	Set<String> indexes(String s, String d, Set<String> set) {
-		Set<String> result = new HashSet<>();
-
-		int index = -1;
-		while ((index = s.indexOf(d, index + 1)) != -1) {
-			StringBuilder sb = new StringBuilder(s);
-			sb.delete(index, index + d.length());
-			if (set.contains(sb.toString())) {
-				continue;
-			}
-			result.add(sb.toString());
-		}
-		return result;
+		return min;
 	}
 }

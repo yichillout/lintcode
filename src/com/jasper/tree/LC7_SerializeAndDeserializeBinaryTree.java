@@ -2,6 +2,7 @@ package com.jasper.tree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import com.jasper.dfs.TreeNode;
@@ -10,64 +11,66 @@ public class LC7_SerializeAndDeserializeBinaryTree {
 
 	// Solution 1 : BFS
 	public static String serialize(TreeNode root) {
-		if (root == null) {
+
+		if (root == null)
 			return "{}";
-		}
 
+		StringBuilder builder = new StringBuilder();
 		Queue<TreeNode> queue = new LinkedList<>();
-		StringBuilder sb = new StringBuilder();
-		queue.offer(root);
-		sb.append("{");
 
+		queue.offer(root);
+
+		builder.append("{");
 		while (!queue.isEmpty()) {
-			TreeNode head = queue.poll();
-			if (head == null) {
-				sb.append("#");
+			TreeNode node = queue.poll();
+			if (node != null) {
+				builder.append(node.val);
+				queue.offer(node.left);
+				queue.offer(node.right);
 			} else {
-				sb.append(head.val);
-				queue.offer(head.left);
-				queue.offer(head.right);
+				builder.append("#");
 			}
 
 			if (!queue.isEmpty()) {
-				sb.append(",");
+				builder.append(",");
 			}
-		}
 
-		sb.append("}");
-		return sb.toString();
+		}
+		builder.append("}");
+		return builder.toString();
 	}
 
-	public static TreeNode deserialize(String data) {
+	public TreeNode deserialize(String data) {
 
-		if (data == null || data.equals("{}")) {
+		if (data == null || data.equals("{}"))
 			return null;
-		}
 
-		String[] vals = data.substring(1, data.length() - 1).split(",");
-		ArrayList<TreeNode> list = new ArrayList<TreeNode>();
-		TreeNode root = new TreeNode(Integer.parseInt(vals[0]));
+		String[] values = data.trim().substring(1, data.length() - 1).split(",");
+		List<TreeNode> nodeList = new ArrayList<>();
 
-		list.add(root);
-		int index = 0;
+		TreeNode root = new TreeNode(Integer.parseInt(values[0]));
+		nodeList.add(root);
 
 		boolean isLeftChild = true;
+		int index = 0;
 
-		for (int i = 1; i < vals.length; i++) {
-			if (!vals[i].equals("#")) {
-				TreeNode node = new TreeNode(Integer.parseInt(vals[i]));
+		for (int i = 1; i < values.length; i++) {
+			if (!values[i].equals("#")) {
+				TreeNode p = nodeList.get(index);
+				TreeNode node = new TreeNode(Integer.parseInt(values[i]));
 				if (isLeftChild) {
-					list.get(index).left = node;
+					p.left = node;
 				} else {
-					list.get(index).right = node;
+					p.right = node;
 				}
-				list.add(node);
+				nodeList.add(node);
 			}
 			if (!isLeftChild) {
 				index++;
 			}
 			isLeftChild = !isLeftChild;
 		}
+
 		return root;
 	}
 

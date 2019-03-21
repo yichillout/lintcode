@@ -16,6 +16,7 @@ public class LC901_ClosestBinarySearchTreeValueII {
 		Stack<TreeNode> lowerStack = getStack(root, target);
 		Stack<TreeNode> upperStack = new Stack<>();
 		upperStack.addAll(lowerStack);
+		
 		if (target < lowerStack.peek().val) {
 			moveLower(lowerStack);
 		} else {
