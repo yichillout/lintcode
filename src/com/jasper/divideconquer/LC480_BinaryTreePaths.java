@@ -1,7 +1,9 @@
-package com.jasper.dfs;
+package com.jasper.divideconquer;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.jasper.dfs.TreeNode;
 
 public class LC480_BinaryTreePaths {
 

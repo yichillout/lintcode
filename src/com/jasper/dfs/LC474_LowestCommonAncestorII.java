@@ -5,15 +5,6 @@ import java.util.List;
 
 public class LC474_LowestCommonAncestorII {
 
-	/*
-	 * @param root: The root of the tree
-	 * 
-	 * @param A: node in the tree
-	 * 
-	 * @param B: node in the tree
-	 * 
-	 * @return: The lowest common ancestor of A and B
-	 */
 	public ParentTreeNode lowestCommonAncestorII(ParentTreeNode root, ParentTreeNode A, ParentTreeNode B) {
 
 		List<ParentTreeNode> pathA = getPath2Root(A);

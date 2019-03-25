@@ -2,13 +2,14 @@ package com.jasper.priorityqueue;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class LC360_SlidingWindowMedian {
 
 	// Solution 1 : Normal heap Version
 	public ArrayList<Integer> medianSlidingWindow(int[] nums, int k) {
-		
+
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		int size = nums.length;
 		if (size == 0 || size < k) {
@@ -16,7 +17,7 @@ public class LC360_SlidingWindowMedian {
 		}
 
 		PriorityQueue<Integer> minPQ = new PriorityQueue<Integer>();
-		PriorityQueue<Integer> maxPQ = new PriorityQueue<Integer>(11, Collections.reverseOrder());
+		PriorityQueue<Integer> maxPQ = new PriorityQueue<>((x, y) -> y - x);
 
 		int median = nums[0];
 		int j = 0;
@@ -61,6 +62,5 @@ public class LC360_SlidingWindowMedian {
 
 		return result;
 	}
-	
-	
+
 }

@@ -20,10 +20,9 @@ public class LC829_WordPatternII {
 
 		Character c = pattern.charAt(0);
 		if (map.containsKey(c)) {
-			if (!str.startsWith(map.get(c))) {
+			if (str.indexOf(map.get(c)) != 0) {
 				return false;
 			}
-
 			return match(pattern.substring(1), str.substring(map.get(c).length()), map, set);
 		}
 

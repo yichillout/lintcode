@@ -1,4 +1,6 @@
-package com.jasper.dfs;
+package com.jasper.divideconquer;
+
+import com.jasper.dfs.TreeNode;
 
 public class LC596_MinimumSubtree {
 

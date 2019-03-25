@@ -80,34 +80,49 @@ public class LC612_KClosestPoints {
 	}
 
 	// solution 2
-	private Point global_origin = null;
+	public static Point[] kClosest2(Point[] points, Point origin, int k) {
 
-	public Point[] kClosest2(Point[] points, Point origin, int k) {
-
-		global_origin = origin;
-		PriorityQueue<Point> pq = new PriorityQueue<Point>(k, new Comparator<Point>() {
-			@Override
-			public int compare(Point a, Point b) {
-				int diff = getDistanceSquare(b, global_origin) - getDistanceSquare(a, global_origin);
-				if (diff == 0)
-					diff = b.x - a.x;
-				if (diff == 0)
-					diff = b.y - a.y;
+		PriorityQueue<Point> pq = new PriorityQueue<>((p1, p2) -> {
+			int diff = getDistance(p2, origin) - getDistance(p1, origin);
+			if (diff != 0)
 				return diff;
-			}
+
+			if (p2.x - p1.x != 0)
+				return p2.x - p1.x;
+
+			return p2.y - p1.y;
 		});
 
-		for (int i = 0; i < points.length; i++) {
-			pq.offer(points[i]);
-			if (pq.size() > k)
+		for (Point point : points) {
+			pq.offer(point);
+			if (pq.size() > k) {
 				pq.poll();
+			}
 		}
 
-		k = pq.size();
-		Point[] ret = new Point[k];
-		while (!pq.isEmpty())
-			ret[--k] = pq.poll();
-		return ret;
+		Point[] results = new Point[pq.size()];
+
+		int index = results.length - 1;
+		while (!pq.isEmpty()) {
+			results[index--] = pq.poll();
+		}
+
+		return results;
+	}
+
+	private static int getDistance(Point p1, Point p2) {
+		return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
+	}
+
+	public static void main(String[] args) {
+		Point origin = new Point(0, 0);
+		Point point1 = new Point(4, 6);
+		Point point2 = new Point(4, 7);
+		Point point3 = new Point(4, 4);
+		Point point4 = new Point(2, 5);
+		Point point5 = new Point(1, 1);
+		Point[] points = { point1, point2, point3, point4, point5 };
+		kClosest2(points, origin, 3);
 	}
 
 }

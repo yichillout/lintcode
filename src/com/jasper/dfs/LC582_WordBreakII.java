@@ -2,47 +2,40 @@ package com.jasper.dfs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class LC582_WordBreakII {
-	public ArrayList<String> wordBreak(String s, Set<String> dict) {
-		// Note: The Solution object is instantiated only once and is reused by each
-		// test case.
-		Map<String, ArrayList<String>> memo = new HashMap<String, ArrayList<String>>();
-		return wordBreakHelper(s, dict, memo);
+
+	public List<String> wordBreak(String s, Set<String> wordDict) {
+		Map<String, List<String>> memo = new HashMap<>();
+		return helper(memo, s, wordDict);
 	}
 
-	public ArrayList<String> wordBreakHelper(String s, Set<String> dict, Map<String, ArrayList<String>> memo) {
+	private List<String> helper(Map<String, List<String>> memo, String s, Set<String> wordDict) {
 		if (memo.containsKey(s)) {
 			return memo.get(s);
 		}
 
-		ArrayList<String> results = new ArrayList<String>();
+		List<String> buffer = new ArrayList<>();
 
-		if (s.length() == 0) {
-			return results;
+		if (wordDict.contains(s)) {
+			buffer.add(s);
 		}
 
-		if (dict.contains(s)) {
-			results.add(s);
-		}
-
-		for (int len = 1; len < s.length(); ++len) {
-			String word = s.substring(0, len);
-			if (!dict.contains(word)) {
-				continue;
-			}
-
-			String suffix = s.substring(len);
-			ArrayList<String> segmentations = wordBreakHelper(suffix, dict, memo);
-
-			for (String segmentation : segmentations) {
-				results.add(word + " " + segmentation);
+		for (int i = 1; i < s.length(); i++) {
+			String s1 = s.substring(0, i);
+			String s2 = s.substring(i);
+			if (wordDict.contains(s1)) {
+				List<String> segmentations = helper(memo, s2, wordDict);
+				for (String segmentation : segmentations) {
+					buffer.add(s1 + " " + segmentation);
+				}
 			}
 		}
 
-		memo.put(s, results);
-		return results;
+		memo.put(s, buffer);
+		return buffer;
 	}
 }

@@ -1,81 +1,48 @@
 package com.jasper.dfs;
 
+class ResultType {
+	public boolean a_exist, b_exist;
+	public TreeNode node;
+
+	ResultType(boolean a, boolean b, TreeNode n) {
+		a_exist = a;
+		b_exist = b;
+		node = n;
+	}
+}
+
 public class LC578_LowestCommonAncestorIII {
 
-	// Solution 1 : divide and conquer
-	class ResultType {
-		TreeNode maxNode;
-		TreeNode minNode;
-		boolean isBST;
-
-		public ResultType(boolean isBST) {
-			this.isBST = isBST;
-			maxNode = null;
-			minNode = null;
-		}
+	public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode A, TreeNode B) {
+		ResultType rt = helper(root, A, B);
+		if (rt.a_exist && rt.b_exist)
+			return rt.node;
+		else
+			return null;
 	}
 
-	public boolean isValidBST1(TreeNode root) {
-		ResultType rt = helper(root);
-		return rt.isBST;
-	}
-
-	public ResultType helper(TreeNode root) {
-
+	public ResultType helper(TreeNode root, TreeNode A, TreeNode B) {
 		if (root == null)
-			return new ResultType(true);
+			return new ResultType(false, false, null);
 
-		ResultType l = helper(root.left);
-		ResultType r = helper(root.right);
+		ResultType left_rt = helper(root.left, A, B);
+		ResultType right_rt = helper(root.right, A, B);
 
-		if (l.isBST == false || r.isBST == false)
-			return new ResultType(false);
+		boolean a_exist = left_rt.a_exist || right_rt.a_exist || root == A;
+		boolean b_exist = left_rt.b_exist || right_rt.b_exist || root == B;
 
-		if (l.maxNode != null && l.maxNode.val >= root.val)
-			return new ResultType(false);
+		if (root == A || root == B)
+			return new ResultType(a_exist, b_exist, root);
 
-		if (r.minNode != null && r.minNode.val <= root.val)
-			return new ResultType(false);
+		if (left_rt.node != null && right_rt.node != null)
+			return new ResultType(a_exist, b_exist, root);
 
-		ResultType rt = new ResultType(true);
-		if (l.minNode != null) {
-			rt.minNode = l.minNode;
-		} else {
-			rt.minNode = root;
-		}
-		if (r.maxNode != null) {
-			rt.maxNode = r.maxNode;
-		} else {
-			rt.maxNode = root;
-		}
+		if (left_rt.node != null)
+			return new ResultType(a_exist, b_exist, left_rt.node);
 
-		return rt;
-	}
+		if (right_rt.node != null)
+			return new ResultType(a_exist, b_exist, right_rt.node);
 
-	// Solution 2 : Traversal
-	private int lastVal = Integer.MIN_VALUE;
-	private boolean firstNode = true;
-
-	public boolean isValidBST2(TreeNode root) {
-
-		if (root == null) {
-			return true;
-		}
-
-		if (!isValidBST2(root.left)) {
-			return false;
-		}
-
-		if (!firstNode && lastVal >= root.val) {
-			return false;
-		}
-
-		firstNode = false;
-		lastVal = root.val;
-		if (!isValidBST2(root.right)) {
-			return false;
-		}
-
-		return true;
+		return new ResultType(a_exist, b_exist, null);
 	}
 }

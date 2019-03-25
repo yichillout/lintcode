@@ -7,43 +7,43 @@ import java.util.List;
 public class LC472_BinaryTreePathSumIII {
 
 	public List<List<Integer>> binaryTreePathSum3(ParentTreeNode root, int target) {
-		List<List<Integer>> results = new ArrayList<List<Integer>>();
-		dfs(root, target, results);
+		List<List<Integer>> results = new ArrayList<>();
+		dfs(results, root, target);
 		return results;
 	}
 
-	public void dfs(ParentTreeNode root, int target, List<List<Integer>> results) {
-		if (root == null)
+	private void dfs(List<List<Integer>> results, ParentTreeNode node, int target) {
+		if (node == null)
 			return;
 
-		List<Integer> path = new ArrayList<Integer>();
-		findSum(root, null, target, path, results);
+		List<Integer> path = new ArrayList<>();
+		findSum(results, path, node, null, target); // no parent at the start node
 
-		dfs(root.left, target, results);
-		dfs(root.right, target, results);
+		dfs(results, node.left, target);
+		dfs(results, node.right, target);
 	}
 
-	public void findSum(ParentTreeNode root, ParentTreeNode father, int target, List<Integer> path,
-			List<List<Integer>> results) {
+	private void findSum(List<List<Integer>> results, List<Integer> path, ParentTreeNode node, ParentTreeNode parent,
+			int remainingTarget) {
 
-		path.add(root.val);
-		target -= root.val;
+		path.add(node.val);
+		remainingTarget = remainingTarget - node.val;
 
-		if (target == 0) {
-			ArrayList<Integer> tmp = new ArrayList<Integer>();
-			Collections.addAll(tmp, new Integer[path.size()]);
-			Collections.copy(tmp, path);
-			results.add(tmp);
+		if (remainingTarget == 0) {
+			results.add(new ArrayList<Integer>(path));
 		}
 
-		if (root.parent != null && root.parent != father)
-			findSum(root.parent, root, target, path, results);
+		if (node.parent != null && node.parent != parent) {
+			findSum(results, path, node.parent, node, remainingTarget);
+		}
 
-		if (root.left != null && root.left != father)
-			findSum(root.left, root, target, path, results);
+		if (node.left != null && node.left != parent) {
+			findSum(results, path, node.left, node, remainingTarget);
+		}
 
-		if (root.right != null && root.right != father)
-			findSum(root.right, root, target, path, results);
+		if (node.right != null && node.right != parent) {
+			findSum(results, path, node.right, node, remainingTarget);
+		}
 
 		path.remove(path.size() - 1);
 	}
