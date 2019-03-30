@@ -1,11 +1,7 @@
 package com.jasper.dp;
 
 public class LC535_BombEnemy {
-	
-	/**
-	 * @param grid: Given a 2D grid, each cell is either 'W', 'E' or '0'
-	 * @return: an integer, the maximum enemies you can kill using one bomb
-	 */
+
 	public int maxKilledEnemies(char[][] grid) {
 
 		if (grid == null || grid.length == 0 || grid[0].length == 0)

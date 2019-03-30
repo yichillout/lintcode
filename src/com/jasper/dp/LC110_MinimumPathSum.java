@@ -69,8 +69,10 @@ public class LC110_MinimumPathSum {
 		return f[now][n - 1];
 
 		/*
-		 * 3 row: now += 1; if(now == 3) now = 0; prev = now - 1; if(prev == -1) prev =
-		 * 2; prev2 = prev -1; if(prev2 == -1) prev2 = 2;
+		 * 3 row: 
+		 * now += 1; if(now == 3) now = 0; 
+		 * prev = now - 1; if(prev == -1) prev = 2; 
+		 * prev2 = prev -1; if(prev2 == -1) prev2 = 2;
 		 */
 	}
 

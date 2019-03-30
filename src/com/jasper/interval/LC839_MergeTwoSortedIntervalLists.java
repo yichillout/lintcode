@@ -6,53 +6,54 @@ import java.util.List;
 public class LC839_MergeTwoSortedIntervalLists {
 
 	public List<Interval> mergeTwoInterval(List<Interval> list1, List<Interval> list2) {
-		List<Interval> results = new ArrayList<>();
-		if (list1 == null || list2 == null) {
-			return results;
-		}
 
-		Interval last = null, curt = null;
-		int i = 0, j = 0;
+		List<Interval> results = new ArrayList<>();
+
+		if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0)
+			return results;
+
+		int i = 0;
+		int j = 0;
+
+		Interval prev = null;
+		Interval cur = null;
+
 		while (i < list1.size() && j < list2.size()) {
 			if (list1.get(i).start < list2.get(j).start) {
-				curt = list1.get(i);
+				cur = list1.get(i);
 				i++;
 			} else {
-				curt = list2.get(j);
+				cur = list2.get(j);
 				j++;
 			}
-
-			last = merge(results, last, curt);
+			prev = mergeInterval(results, prev, cur);
 		}
 
 		while (i < list1.size()) {
-			last = merge(results, last, list1.get(i));
+			prev = mergeInterval(results, prev, list1.get(i));
 			i++;
 		}
 
 		while (j < list2.size()) {
-			last = merge(results, last, list2.get(j));
+			prev = mergeInterval(results, prev, list2.get(j));
 			j++;
 		}
 
-		if (last != null) {
-			results.add(last);
-		}
+		results.add(prev);
+
 		return results;
 	}
 
-	private Interval merge(List<Interval> results, Interval last, Interval curt) {
-		if (last == null) {
-			return curt;
+	private Interval mergeInterval(List<Interval> results, Interval prev, Interval cur) {
+		if (prev == null)
+			return cur;
+
+		if (prev.end < cur.start) {
+			results.add(prev);
+			return cur;
 		}
 
-		if (curt.start > last.end) {
-			results.add(last);
-			return curt;
-		}
-
-		last.end = Math.max(last.end, curt.end);
-		return last;
+		prev.end = Math.max(prev.end, cur.end);
+		return prev;
 	}
-
 }

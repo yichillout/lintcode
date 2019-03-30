@@ -1,11 +1,7 @@
 package com.jasper.dp;
 
-public class LC512_DecodeCode {
+public class LC512_DecodeWays {
 
-	/**
-	 * @param s: a string, encoded message
-	 * @return: an integer, the number of ways decoding
-	 */
 	public int numDecodings(String s) {
 
 		char[] ss = s.toCharArray();
@@ -16,7 +12,7 @@ public class LC512_DecodeCode {
 
 		int[] f = new int[n + 1];
 		// f[0]=1 is for the remaining number can be correct.
-		f[0] = 1; 
+		f[0] = 1;
 
 		int i, j;
 		for (i = 1; i <= n; i++) {

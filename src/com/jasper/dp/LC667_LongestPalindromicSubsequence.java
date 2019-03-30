@@ -31,10 +31,7 @@ public class LC667_LongestPalindromicSubsequence {
 		for (len = 3; len <= n; ++len) {
 			for (i = 0; i <= n - len; ++i) {
 				j = i + len - 1;
-				f[i][j] = f[i][j - 1];
-				if (f[i + 1][j] > f[i][j]) {
-					f[i][j] = f[i + 1][j];
-				}
+				f[i][j] = Math.max(f[i][j - 1], f[i + 1][j]);
 				if (s.charAt(i) == s.charAt(j) && f[i + 1][j - 1] + 2 > f[i][j]) {
 					f[i][j] = f[i + 1][j - 1] + 2;
 				}
