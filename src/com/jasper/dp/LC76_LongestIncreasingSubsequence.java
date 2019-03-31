@@ -2,7 +2,7 @@ package com.jasper.dp;
 
 public class LC76_LongestIncreasingSubsequence {
 
-	// Solution 1 : DP O(n*n)
+	// Solution 1 : DP O(n^2)
 	// 这题不能用滚动数组
 	public int longestIncreasingSubsequence1(int[] nums) {
 		int[] f = new int[nums.length];

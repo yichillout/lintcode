@@ -2,6 +2,8 @@ package com.jasper.binarysearch;
 
 public class LC428_PowX {
 
+	
+	// Sultion 1 : mathematics
 	// 3 -> 11
 	// 6 -> 110
 	// 当是1的时候, 乘以base
