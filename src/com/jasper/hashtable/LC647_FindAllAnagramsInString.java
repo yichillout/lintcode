@@ -17,14 +17,14 @@ public class LC647_FindAllAnagramsInString {
 		char[] sc = s.toCharArray();
 		char[] pc = p.toCharArray();
 
-		int[] sCount = new int[256];
-		int[] pCount = new int[256];
+		// int[] sCount = new int[256];
+		// int[] pCount = new int[256];
 		int[] det = new int[256];
 
 		// det = sCount - pCount
 		for (int i = 0; i < pc.length; i++) {
-			sCount[sc[i]]++;
-			pCount[pc[i]]++;
+			// sCount[sc[i]]++;
+			// pCount[pc[i]]++;
 
 			det[sc[i]]++;
 			det[pc[i]]--;
@@ -43,8 +43,8 @@ public class LC647_FindAllAnagramsInString {
 			char right = sc[i];
 			char left = sc[i - p.length()];
 
-			sCount[right]++;
-			sCount[left]--;
+			// sCount[right]++;
+			// sCount[left]--;
 
 			absSum = absSum - Math.abs(det[right]) - Math.abs(det[left]);
 

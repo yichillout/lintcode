@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import com.jasper.dfs.TreeNode;
+
 public class LC71_BinaryTreeZigzagLevelOrderTraversal {
 
 	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {

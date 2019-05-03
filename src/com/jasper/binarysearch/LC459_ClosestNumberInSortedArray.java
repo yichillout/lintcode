@@ -3,43 +3,46 @@ package com.jasper.binarysearch;
 public class LC459_ClosestNumberInSortedArray {
 
 	public int closestNumber(int[] A, int target) {
-		if (A == null || A.length == 0) {
-			return -1;
-		}
 
-		int index = firstIndex(A, target);
-		if (index == 0) {
+		int index = findLastLess(A, target);
+
+		if (index == -1) {
 			return 0;
 		}
-		if (index == A.length) {
-			return A.length - 1;
+
+		if (index == A.length - 1) {
+			return index;
 		}
 
-		if (target - A[index - 1] < A[index] - target) {
-			return index - 1;
+		if (Math.abs(A[index] - target) >= Math.abs(A[index + 1] - target)) {
+			return index + 1;
+		} else {
+			return index;
 		}
-		return index;
+
 	}
 
-	private int firstIndex(int[] A, int target) {
-		int start = 0, end = A.length - 1;
+	private int findLastLess(int[] A, int target) {
+		int start = 0;
+		int end = A.length - 1;
+
 		while (start + 1 < end) {
 			int mid = start + (end - start) / 2;
-			if (A[mid] < target) {
+			if (A[mid] <= target) {
 				start = mid;
-			} else if (A[mid] > target) {
-				end = mid;
 			} else {
 				end = mid;
 			}
 		}
 
-		if (A[start] >= target) {
-			return start;
-		}
-		if (A[end] >= target) {
+		if (A[end] <= target) {
 			return end;
 		}
-		return A.length;
+
+		if (A[start] <= target) {
+			return start;
+		}
+
+		return -1;
 	}
 }

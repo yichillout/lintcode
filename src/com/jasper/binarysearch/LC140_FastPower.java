@@ -11,10 +11,13 @@ public class LC140_FastPower {
 		}
 
 		long product = fastPower(a, b, n / 2);
+		
 		product = (product * product) % b;
+		
 		if (n % 2 == 1) {
 			product = (product * (a % b)) % b;
 		}
+		
 		return (int) product;
 	}
 

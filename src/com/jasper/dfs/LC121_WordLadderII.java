@@ -10,75 +10,88 @@ import java.util.Set;
 
 public class LC121_WordLadderII {
 
-	public List<List<String>> findLadders(String start, String end, Set<String> dict) {
-		List<List<String>> ladders = new ArrayList<List<String>>();
-		Map<String, List<String>> map = new HashMap<String, List<String>>();
-		Map<String, Integer> distance = new HashMap<String, Integer>();
+	public List<List<String>> findLadders(String beginWord, String endWord, Set<String> wordList) {
 
-		dict.add(start);
-		dict.add(end);
+		List<List<String>> result = new ArrayList<>();
+		Map<String, Integer> distance = new HashMap<>(); // 这里的distance还有标记是否走过的作用
+		Map<String, List<String>> map = new HashMap<>();
 
-		bfs(map, distance, end, start, dict);
+		wordList.add(beginWord);
+		wordList.add(endWord);
+
+		bfs(map, distance, endWord, wordList);
 
 		List<String> path = new ArrayList<String>();
+		dfs(result, path, map, distance, beginWord, endWord, wordList);
 
-		dfs(ladders, path, start, end, distance, map);
-
-		return ladders;
+		return result;
 	}
 
-	void dfs(List<List<String>> ladders, List<String> path, String crt, String end, Map<String, Integer> distance,
-			Map<String, List<String>> map) {
-		path.add(crt);
-		if (crt.equals(end)) {
-			ladders.add(new ArrayList<String>(path));
-		} else {
-			for (String next : map.get(crt)) {
-				if (distance.containsKey(next) && distance.get(crt) == distance.get(next) + 1) {
-					dfs(ladders, path, next, end, distance, map);
-				}
+	private void dfs(List<List<String>> result, List<String> path, Map<String, List<String>> map,
+			Map<String, Integer> distance, String start, String endWord, Set<String> wordList) {
+
+		path.add(start);
+
+		if (start.equals(endWord)) {
+			result.add(new ArrayList<String>(path));
+			path.remove(path.size() - 1);
+			return;
+		}
+
+		for (String neighbor : map.get(start)) {
+			if (distance.containsKey(neighbor) && distance.get(neighbor) + 1 == distance.get(start)) {
+				dfs(result, path, map, distance, neighbor, endWord, wordList);
 			}
 		}
+
 		path.remove(path.size() - 1);
 	}
 
-	void bfs(Map<String, List<String>> map, Map<String, Integer> distance, String start, String end, Set<String> dict) {
-		Queue<String> q = new LinkedList<String>();
-		q.offer(start);
-		distance.put(start, 0);
-		for (String s : dict) {
-			map.put(s, new ArrayList<String>());
+	private void bfs(Map<String, List<String>> map, Map<String, Integer> distance, String endWord,
+			Set<String> wordList) {
+
+		Queue<String> q = new LinkedList<>();
+
+		for (String str : wordList) {
+			map.put(str, new ArrayList<String>());
 		}
+
+		int level = 0;
+
+		q.offer(endWord);
+		distance.put(endWord, level);
 
 		while (!q.isEmpty()) {
-			String crt = q.poll();
 
-			List<String> nextList = expand(crt, dict);
-			for (String next : nextList) {
-				map.get(next).add(crt);
-				if (!distance.containsKey(next)) {
-					distance.put(next, distance.get(crt) + 1);
-					q.offer(next);
-				}
-			}
-		}
-	}
+			int size = q.size();
+			level++;
 
-	List<String> expand(String crt, Set<String> dict) {
-		List<String> expansion = new ArrayList<String>();
-
-		for (int i = 0; i < crt.length(); i++) {
-			for (char ch = 'a'; ch <= 'z'; ch++) {
-				if (ch != crt.charAt(i)) {
-					String expanded = crt.substring(0, i) + ch + crt.substring(i + 1);
-					if (dict.contains(expanded)) {
-						expansion.add(expanded);
+			for (int i = 0; i < size; i++) {
+				String tmp = q.poll();
+				for (String str : wordList) {
+					if (isNeighbors(tmp, str)) {
+						map.get(str).add(tmp);
+						if (!distance.containsKey(str)) {
+							q.offer(str);
+							distance.put(str, level);
+						}
 					}
 				}
 			}
 		}
 
-		return expansion;
 	}
 
+	private boolean isNeighbors(String str1, String str2) {
+		int count = 0;
+		for (int i = 0; i < str1.length(); i++) {
+			if (str1.charAt(i) != str2.charAt(i)) {
+				count++;
+			}
+			if (count > 1) {
+				return false;
+			}
+		}
+		return count == 1;
+	}
 }

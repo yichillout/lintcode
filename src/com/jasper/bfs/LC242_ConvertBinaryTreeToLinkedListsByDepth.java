@@ -5,6 +5,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import com.jasper.dfs.TreeNode;
+
+class ListNode {
+	int val;
+	ListNode next;
+
+	ListNode(int x) {
+		val = x;
+	}
+}
+
 public class LC242_ConvertBinaryTreeToLinkedListsByDepth {
 
 	public List<ListNode> binaryTreeToLists(TreeNode root) {
