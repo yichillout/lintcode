@@ -5,13 +5,14 @@ import java.util.List;
 
 public class LC780_RemoveInvalidParentheses {
 
+	// solution 1
+
 	/*
 	 * 1.从左到右遍历String获得左括号和右括号的计数
 	 * 2.从左到右遍历String，如果碰到左括号或右括号，就删除左括号或右括号，更新计数，然后把剩下的String放入DFS递归，
-	 * 注意当有连续的左括号或者右括号的时候，必须先删前面的 
-	 * 3.DFS退出的条件是左括号和有括号的计数均为0
+	 * 注意当有连续的左括号或者右括号的时候，必须先删前面的 3.DFS退出的条件是左括号和有括号的计数均为0
 	 */
-	
+
 	public List<String> removeInvalidParentheses(String s) {
 
 		List<String> results = new ArrayList<String>();
@@ -62,5 +63,41 @@ public class LC780_RemoveInvalidParentheses {
 			}
 		}
 		return count;
+	}
+
+	// solution 2
+	char[][] patterns = { { '(', ')' }, { ')', '(' } };
+	public List<String> removeInvalidParentheses1(String s) {
+		List<String> ret = new ArrayList<>();
+
+		dfs(s, 0, 0, patterns[0], ret);
+		return ret;
+	}
+
+	private void dfs(String s, int start, int lastRemove, char[] pattern, List<String> ret) {
+		int count = 0, n = s.length();
+		for (int i = start; i < n; i++) {
+			if (s.charAt(i) == pattern[0]) {
+				count++;
+			}
+			if (s.charAt(i) == pattern[1]) {
+				count--;
+			}
+			if (count < 0) {
+				for (int j = lastRemove; j <= i; j++) {
+					if (s.charAt(j) == pattern[1] && (j == lastRemove || s.charAt(j) != s.charAt(j - 1))) {
+						dfs(s.substring(0, j) + s.substring(j + 1), i, j, pattern, ret);
+					}
+				}
+				return;
+			}
+		}
+
+		s = new StringBuilder(s).reverse().toString();
+		if (pattern[0] == patterns[0][0]) {
+			dfs(s, 0, 0, patterns[1], ret);
+		} else {
+			ret.add(s);
+		}
 	}
 }
