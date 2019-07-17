@@ -16,7 +16,7 @@ public class LC901_ClosestBinarySearchTreeValueII {
 		Stack<TreeNode> lowerStack = getStack(root, target);
 		Stack<TreeNode> upperStack = new Stack<>();
 		upperStack.addAll(lowerStack);
-		
+
 		if (target < lowerStack.peek().val) {
 			moveLower(lowerStack);
 		} else {
@@ -39,7 +39,6 @@ public class LC901_ClosestBinarySearchTreeValueII {
 
 	private Stack<TreeNode> getStack(TreeNode root, double target) {
 		Stack<TreeNode> stack = new Stack<>();
-
 		while (root != null) {
 			stack.push(root);
 
@@ -49,7 +48,6 @@ public class LC901_ClosestBinarySearchTreeValueII {
 				root = root.right;
 			}
 		}
-
 		return stack;
 	}
 
@@ -60,13 +58,12 @@ public class LC901_ClosestBinarySearchTreeValueII {
 			while (!stack.isEmpty() && stack.peek().right == node) {
 				node = stack.pop();
 			}
-			return;
-		}
-
-		node = node.right;
-		while (node != null) {
-			stack.push(node);
-			node = node.left;
+		} else {
+			node = node.right;
+			while (node != null) {
+				stack.push(node);
+				node = node.left;
+			}
 		}
 	}
 
@@ -77,13 +74,12 @@ public class LC901_ClosestBinarySearchTreeValueII {
 			while (!stack.isEmpty() && stack.peek().left == node) {
 				node = stack.pop();
 			}
-			return;
-		}
-
-		node = node.left;
-		while (node != null) {
-			stack.push(node);
-			node = node.right;
+		} else {
+			node = node.left;
+			while (node != null) {
+				stack.push(node);
+				node = node.right;
+			}
 		}
 	}
 }

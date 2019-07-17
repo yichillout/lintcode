@@ -2,10 +2,6 @@ package com.jasper.dp;
 
 public class LC115_UniquePathsII {
 
-	/**
-	 * @param obstacleGrid: A list of lists of integers
-	 * @return: An integer
-	 */
 	public int uniquePathsWithObstacles(int[][] grid) {
 		int m = grid.length;
 		if (m == 0)

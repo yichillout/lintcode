@@ -3,25 +3,59 @@ package com.jasper.dp;
 public class LC77_LongestCommonSubsequence {
 
 	public int longestCommonSubsequence(String A, String B) {
-		int m = A.length();
-		int n = B.length();
-		char[] ca = A.toCharArray();
-		char[] cb = B.toCharArray();
-		int[][] dp = new int[m + 1][n + 1];
-		for (int i = 1; i < m + 1; i++) {
-			for (int j = 1; j < n + 1; j++) {
+		int n = A.length();
+		int m = B.length();
+
+		int[][] f = new int[n + 1][m + 1];
+		int[][] pi = new int[n + 1][m + 1];
+
+		for (int i = 0; i < f.length; i++) {
+			for (int j = 0; j < f[0].length; j++) {
 				if (i == 0 || j == 0) {
-					dp[i][j] = 0;
+					f[i][j] = 0;
 					continue;
 				}
 
-				dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-				if (ca[i - 1] == cb[j - 1]) {
-					dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - 1] + 1);
+				f[i][j] = Math.max(f[i - 1][j], f[i][j - 1]);
+
+				if (f[i][j] == f[i - 1][j]) {
+					pi[i][j] = 1;
+				} else {
+					pi[i][j] = 2;
+				}
+
+				if (A.charAt(i - 1) == B.charAt(j - 1)) {
+					f[i][j] = Math.max(f[i][j], f[i - 1][j - 1] + 1);
+					if (f[i][j] == f[i - 1][j - 1]) {
+						pi[i][j] = 3;
+					}
+
 				}
 			}
 		}
-		return dp[m][n];
-	}
 
+		char[] res = new char[f[n][m]];
+
+		int p = f[n][m] - 1;
+		int i = n;
+		int j = m;
+
+		while (i > 0 && j > 0) {
+			if (pi[i][j] == 1) {
+				i--;
+			} else if (pi[i][j] == 2) {
+				j--;
+			} else {
+				res[p] = A.charAt(i - 1);
+				i--;
+				j--;
+				p--;
+			}
+		}
+
+		for (i = 0; i < f[n][m]; i++) {
+			System.out.print(res[i]);
+		}
+		return f[n][m];
+	}
 }

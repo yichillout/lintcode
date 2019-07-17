@@ -3,64 +3,52 @@ package com.jasper.priorityqueue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class LC360_SlidingWindowMedian {
 
-	// Solution 1 : Normal heap Version
-	public ArrayList<Integer> medianSlidingWindow(int[] nums, int k) {
+	public List<Integer> medianSlidingWindow(int[] nums, int k) {
 
 		ArrayList<Integer> result = new ArrayList<Integer>();
-		int size = nums.length;
-		if (size == 0 || size < k) {
-			return result;
-		}
 
 		PriorityQueue<Integer> minPQ = new PriorityQueue<Integer>();
 		PriorityQueue<Integer> maxPQ = new PriorityQueue<>((x, y) -> y - x);
 
-		int median = nums[0];
-		int j = 0;
-		if (k == 1) {
-			result.add(median);
-		}
-
-		for (int i = 1; i < size; i++) {
-			if (nums[i] > median) {
-				minPQ.offer(nums[i]);
+		for (int i = 0; i < nums.length; i++) {
+			if (!minPQ.isEmpty() && nums[i] >= minPQ.peek()) {
+				minPQ.add(nums[i]);
 			} else {
-				maxPQ.offer(nums[i]);
+				maxPQ.add(nums[i]);
 			}
 
-			if (i > k - 1) {
-				if (nums[j] > median) {
-					minPQ.remove(nums[j]);
-				} else if (nums[j] < median) {
-					maxPQ.remove(nums[j]);
+			if (i >= k) {
+				if (!minPQ.isEmpty() && nums[i - k] >= minPQ.peek()) {
+					minPQ.remove(nums[i - k]);
 				} else {
-					median = Integer.MIN_VALUE;
+					maxPQ.remove(nums[i - k]);
 				}
-				j++;
 			}
 
-			if (median == Integer.MIN_VALUE) {
-				median = minPQ.size() > maxPQ.size() ? minPQ.poll() : maxPQ.poll();
-			} else {
-				while (minPQ.size() >= maxPQ.size() + 2) {
-					maxPQ.offer(median);
-					median = minPQ.poll();
+			if (minPQ.size() - maxPQ.size() > 1) {
+				while (minPQ.size() - maxPQ.size() > 1) {
+					maxPQ.add(minPQ.poll());
 				}
-				while (maxPQ.size() >= minPQ.size() + 1) {
-					minPQ.offer(median);
-					median = maxPQ.poll();
+			} else if (maxPQ.size() - minPQ.size() > 1) {
+				while (maxPQ.size() - minPQ.size() > 1) {
+					minPQ.add(maxPQ.poll());
 				}
 			}
+
 			if (i >= k - 1) {
-				result.add(median);
+				if (maxPQ.size() >= minPQ.size()) {
+					result.add(maxPQ.peek());
+				} else {
+					result.add(minPQ.peek());
+				}
 			}
 		}
 
 		return result;
 	}
-
 }

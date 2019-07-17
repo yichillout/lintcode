@@ -1,63 +1,62 @@
 package com.jasper.tree;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-
-class Item {
+class ListNode {
 	int val;
-	int freq;
+	ListNode next;
 
-	public Item(int val, int freq) {
+	ListNode(int val) {
 		this.val = val;
-		this.freq = freq;
+		this.next = null;
 	}
 }
 
-class ItemComparator implements Comparator<Item> {
-	public int compare(Item i1, Item i2) {
-		if (i1.freq == i2.freq) {
-			return i1.val - i2.val;
-		} else {
-			return i1.freq - i2.freq;
-		}
+class TreeNode {
+	public int val;
+	public TreeNode left, right;
+
+	public TreeNode(int val) {
+		this.val = val;
+		this.left = this.right = null;
 	}
 }
 
 public class LC106_ConvertSortedListToBinarySearchTree {
 
-	public void customSort(List<Integer> arr) {
+	private ListNode current;
 
-		Map<Integer, Integer> map = new HashMap<>();
-		PriorityQueue<Item> pq = new PriorityQueue<Item>(new Comparator<Item>() {
-			public int compare(Item i1, Item i2) {
-				if (i1.freq == i2.freq) {
-					return i1.val - i2.val;
-				} else {
-					return i1.freq - i2.freq;
-				}
-			}
-		});
+	private int getListLength(ListNode head) {
+		int size = 0;
 
-		for (int i = 0; i < arr.size(); i++) {
-			if (!map.containsKey(arr.get(i))) {
-				map.put(arr.get(i), 1);
-			} else {
-				map.put(arr.get(i), map.get(arr.get(i)) + 1);
-			}
+		while (head != null) {
+			size++;
+			head = head.next;
 		}
 
-		for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-			Item item = new Item(entry.getKey(), entry.getValue());
-			pq.offer(item);
+		return size;
+	}
+
+	public TreeNode sortedListToBST(ListNode head) {
+		int size;
+
+		current = head;
+		size = getListLength(head);
+
+		return sortedListToBSTHelper(size);
+	}
+
+	public TreeNode sortedListToBSTHelper(int size) {
+		if (size <= 0) {
+			return null;
 		}
 
-		while (!pq.isEmpty()) {
-			Item item = pq.poll();
-			System.out.println("val:" + item.val + "; freq" + item.freq);
-		}
+		TreeNode left = sortedListToBSTHelper(size / 2);
+		TreeNode root = new TreeNode(current.val);
+		current = current.next;
+		TreeNode right = sortedListToBSTHelper(size - 1 - size / 2);
 
+		root.left = left;
+		root.right = right;
+
+		return root;
 	}
 }
