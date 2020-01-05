@@ -1,6 +1,5 @@
 package com.jasper.bfs;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -19,8 +18,6 @@ public class LC120_WordLadder {
 		dict.add(end);
 
 		Map<String, Set<String>> graph = buildGraph(dict);
-
-		// System.out.println(graph);
 
 		Queue<String> queue = new LinkedList<>();
 		Set<String> visited = new HashSet<>();
